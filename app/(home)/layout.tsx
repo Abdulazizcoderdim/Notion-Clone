@@ -1,12 +1,14 @@
 import { ChildProps } from '@/types'
+import { Navbar } from './components'
 
-const RootLayout = ({ children }: ChildProps) => {
+const HomeLayout = ({ children }: ChildProps) => {
   return (
-    <div>
-      <h1>Home</h1>
-      {children}
+    <div className="h-full">
+      <Navbar />
+      <main className="h-full pt-40">{children}</main>
     </div>
   )
 }
 
-export default RootLayout
+export default HomeLayout
+ 
