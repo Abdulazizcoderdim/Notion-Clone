@@ -1,3 +1,4 @@
-import { Navbar } from "./navbar";
+import { Logo } from './logo'
+import { Navbar } from './navbar'
 
-export { Navbar }
+export { Logo, Navbar }
