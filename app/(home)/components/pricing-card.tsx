@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
+import { Check } from 'lucide-react'
 
 interface PricingCardProps {
   title: string
@@ -29,6 +30,15 @@ export const PricingCard = ({
       </div>
 
       <Button>Get Started</Button>
+
+      <ul role="list" className="space-y-4 text-left mt-8">
+        {options.split(', ').map((option) => (
+          <li key={option} className="flex items-center space-x-3">
+            <Check className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400" />
+            <span>{option}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
