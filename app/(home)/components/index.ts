@@ -1,6 +1,7 @@
+import { Clients } from './clients'
 import { Heroes } from './heroes'
 import { Logo } from './logo'
 import { Navbar } from './navbar'
-import { Clients } from './clients'
+import { Pricing } from './pricing'
 
-export { Heroes, Logo, Navbar, Clients }
+export { Clients, Heroes, Logo, Navbar, Pricing, }
