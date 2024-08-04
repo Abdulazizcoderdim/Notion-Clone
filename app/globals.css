@@ -73,3 +73,27 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.cl-userButtonPopoverMain {
+  @apply dark:bg-zinc-900;
+}
+
+.cl-userPreview {
+  @apply dark:text-white;
+}
+
+.cl-userButtonPopoverActionButton{
+  @apply dark:text-white dark:hover:bg-gray-500
+}
+
+.cl-userButtonPopoverFooter {
+  display: none;
+}
+
+.cl-internal-1dauvpw {
+  display: none;
+}
+
+.cl-footer{
+  display: none;
+}

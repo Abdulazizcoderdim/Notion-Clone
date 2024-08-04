@@ -2,6 +2,7 @@
 
 import { ModeToggle } from '@/components/shared/ModeToggle'
 import { Button } from '@/components/ui/button'
+import { Loader } from '@/components/ui/loader'
 import { useScrolled } from '@/hooks/use-scrolled'
 import { cn } from '@/lib/utils'
 import { SignInButton, UserButton } from '@clerk/clerk-react'
@@ -22,6 +23,8 @@ export const Navbar = () => {
     >
       <Logo />
       <div className="flex items-center gap-x-2">
+        {isLoading && <Loader />}
+
         {!isAuthenticated && !isLoading && (
           <>
             <SignInButton mode="modal">
@@ -40,7 +43,7 @@ export const Navbar = () => {
             <Button asChild variant={'ghost'} size={'sm'}>
               <Link href={'/documents'}>Enter Notion</Link>
             </Button>
-            <UserButton afterSignOutUrl='/'/>
+            <UserButton afterSignOutUrl="/" />
           </>
         )}
         <ModeToggle />
