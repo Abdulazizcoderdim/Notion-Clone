@@ -2,15 +2,26 @@
 
 import { cn } from '@/lib/utils'
 import { ChevronsLeft, MenuIcon } from 'lucide-react'
-import React, { ElementRef, useRef, useState } from 'react'
+import React, { ElementRef, useEffect, useRef, useState } from 'react'
+import { useMediaQuery } from 'usehooks-ts'
 
 const Sidebar = () => {
+  const isMobile = useMediaQuery('(max-width: 770px)')
+
   const sidebarRef = useRef<ElementRef<'div'>>(null)
   const navbarRef = useRef<ElementRef<'div'>>(null)
 
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isResetting, setIsResetting] = useState(false)
   const isResizing = useRef(false)
+
+  useEffect(() => {
+    if (isMobile) {
+      collapse()
+    } else {
+      reset()
+    }
+  }, [isMobile])
 
   const collapse = () => {
     if (sidebarRef.current && navbarRef.current) {
@@ -29,9 +40,9 @@ const Sidebar = () => {
       setIsCollapsed(false)
       setIsResetting(true)
 
-      sidebarRef.current.style.width = '240px'
-      navbarRef.current.style.width = 'calc(100% - 240px)'
-      navbarRef.current.style.left = '240px'
+      sidebarRef.current.style.width = isMobile ? '100%' : '240px'
+      navbarRef.current.style.width = isMobile ? '0' : 'calc(100% - 240px)'
+      navbarRef.current.style.left = isMobile ? '100%' : '240px'
       setTimeout(() => setIsResetting(false), 300)
     }
   }
@@ -74,7 +85,8 @@ const Sidebar = () => {
         ref={sidebarRef}
         className={cn(
           'group/sidebar h-screen bg-secondary overflow-y-auto relative flex w-60 flex-col z-50',
-          isResetting && 'transition-all ease-in duration-300'
+          isResetting && 'transition-all ease-in duration-300',
+          isMobile && 'w-0'
         )}
       >
         <div
@@ -94,7 +106,8 @@ const Sidebar = () => {
       <div
         className={cn(
           'absolute top-0 z-50 left-60 w-[calc(100%-240px)]',
-          isResetting && 'transition-all ease-in duration-300'
+          isResetting && 'transition-all ease-in duration-300',
+          isMobile && 'w-full left-0'
         )}
         ref={navbarRef}
       >
