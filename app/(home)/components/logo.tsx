@@ -17,7 +17,7 @@ export const Logo = () => {
         height={50}
         className="object-cover hidden dark:block"
       />
-      <p className='font-semibold text-xl'>Notion</p>
+      <p className="font-semibold text-xl">Notion</p>
     </div>
   )
 }

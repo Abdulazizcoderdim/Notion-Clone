@@ -11,7 +11,7 @@ const Sidebar = () => {
   const sidebarRef = useRef<ElementRef<'div'>>(null)
   const navbarRef = useRef<ElementRef<'div'>>(null)
 
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isCollapsed, setIsCollapsed] = useState(isMobile)
   const [isResetting, setIsResetting] = useState(false)
   const isResizing = useRef(false)
 
@@ -91,7 +91,10 @@ const Sidebar = () => {
       >
         <div
           role="button"
-          className="h-6 w-6 flex items-center justify-center text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 cursor-pointer opacity-0 group-hover/sidebar:opacity-100 transition"
+          className={cn(
+            'h-6 w-6 flex items-center justify-center text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 cursor-pointer opacity-0 group-hover/sidebar:opacity-100 transition',
+            isMobile && 'opacity-100'
+          )}
           onClick={collapse}
         >
           <ChevronsLeft className="h-6 w-6" />
