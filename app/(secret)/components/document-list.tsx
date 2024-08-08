@@ -15,7 +15,9 @@ const DocumentList = ({ level, parentDocumentId }: DocumentListProps) => {
   })
   console.log(document)
 
-  return <div>DocumentList</div>
+  return <>
+    
+  </>
 }
 
 export default DocumentList
