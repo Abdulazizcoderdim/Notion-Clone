@@ -38,7 +38,13 @@ export const Item = ({ label, id, level, onExpand, expanded }: ItemProps) => {
     event.stopPropagation()
     if (!id) return
 
-    createDocument({ title: 'Untitled', parentDocument: id })
+    createDocument({ title: 'Untitled', parentDocument: id }).then(
+      (document) => {
+        if (!expanded) {
+          onExpand?.()
+        }
+      }
+    )
   }
 
   const handleExpand = (
