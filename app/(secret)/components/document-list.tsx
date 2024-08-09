@@ -2,7 +2,9 @@
 
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
+import { cn } from '@/lib/utils'
 import { useQuery } from 'convex/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Item } from './item'
 
@@ -14,6 +16,8 @@ interface DocumentListProps {
 const DocumentList = ({ level = 0, parentDocumentId }: DocumentListProps) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
+  const router = useRouter()
+
   const onExpand = (documentId: string) => {
     setExpanded((prev) => ({
       ...prev,
@@ -21,13 +25,44 @@ const DocumentList = ({ level = 0, parentDocumentId }: DocumentListProps) => {
     }))
   }
 
+  const onRedirect = (documentId: string) => {
+    router.push(`/documents/${documentId}`)
+  }
+
   const documents = useQuery(api.document.getDocuments, {
     parentDocument: parentDocumentId,
   })
 
+  if (documents === undefined) {
+    return (
+      <>
+        <Item.Skeleton level={level} />
+
+        {level === 0 && (
+          <>
+            <Item.Skeleton level={level} />
+            <Item.Skeleton level={level} />
+          </>
+        )}
+      </>
+    )
+  }
+
   return (
     <>
-      {documents?.map((document) => (
+      <p
+        className={cn(
+          'hidden text-sm font-medium text-muted-foreground/80',
+          expanded && 'last:block',
+          level === 0 && 'hidden'
+        )}
+        style={{
+          paddingLeft: level ? `${level * 12 + 25}px` : undefined,
+        }}
+      >
+        No documents found.
+      </p>
+      {documents.map((document) => (
         <div key={document._id}>
           <Item
             label={document.title}
@@ -35,6 +70,7 @@ const DocumentList = ({ level = 0, parentDocumentId }: DocumentListProps) => {
             level={level}
             expanded={expanded[document._id]}
             onExpand={() => onExpand(document._id)}
+            onClick={() => onRedirect(document._id)}
           />
           {expanded[document._id] && (
             <DocumentList parentDocumentId={document._id} level={level + 1} />
