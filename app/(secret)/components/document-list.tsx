@@ -4,7 +4,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 import { cn } from '@/lib/utils'
 import { useQuery } from 'convex/react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Item } from './item'
 
@@ -17,6 +17,7 @@ const DocumentList = ({ level = 0, parentDocumentId }: DocumentListProps) => {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
 
   const router = useRouter()
+  const params = useParams()
 
   const onExpand = (documentId: string) => {
     setExpanded((prev) => ({
@@ -71,6 +72,8 @@ const DocumentList = ({ level = 0, parentDocumentId }: DocumentListProps) => {
             expanded={expanded[document._id]}
             onExpand={() => onExpand(document._id)}
             onClick={() => onRedirect(document._id)}
+            active={params.documentId === document._id}
+            documentIcon={document.icon}
           />
           {expanded[document._id] && (
             <DocumentList parentDocumentId={document._id} level={level + 1} />
