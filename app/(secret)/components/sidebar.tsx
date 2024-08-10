@@ -1,13 +1,26 @@
 'use client'
 
+import { Progress } from '@/components/ui/progress'
+import { api } from '@/convex/_generated/api'
 import { cn } from '@/lib/utils'
-import { ChevronsLeft, MenuIcon } from 'lucide-react'
+import { useMutation } from 'convex/react'
+import {
+  ChevronsLeft,
+  MenuIcon,
+  Plus,
+  Rocket,
+  Search,
+  Settings,
+} from 'lucide-react'
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import DocumentList from './document-list'
+import { Item } from './item'
+import { UserBox } from './user-box'
 
 const Sidebar = () => {
   const isMobile = useMediaQuery('(max-width: 770px)')
+  const createDocument = useMutation(api.document.createDocument)
 
   const sidebarRef = useRef<ElementRef<'div'>>(null)
   const navbarRef = useRef<ElementRef<'div'>>(null)
@@ -80,6 +93,14 @@ const Sidebar = () => {
     document.removeEventListener('mouseup', handleMouseUp)
   }
 
+  const onCreateDocument = () => {
+    createDocument({
+      title: 'Untitle',
+    })
+  }
+
+  const arr = [1]
+
   return (
     <>
       <div
@@ -101,16 +122,37 @@ const Sidebar = () => {
           <ChevronsLeft className="h-6 w-6" />
         </div>
 
-        <div className="">User Profile Item</div>
+        <div className="">
+          <UserBox />
+          <Item label="Search" icon={Search} />
+          <Item label="Settings" icon={Settings} />
+          <Item label="New document" icon={Plus} onClick={onCreateDocument} />
+        </div>
 
         <div className="mt-4">
           <DocumentList />
+          <Item onClick={onCreateDocument} icon={Plus} label="Add a page" />
         </div>
 
         <div
           onMouseDown={handleMoseDown}
           className="absolute right-0 top-0 w-1.5 h-full cursor-ew-resize bg-primary/10 opacity-0 group-hover/sidebar:opacity-100 transition"
         />
+
+        <div className="absolute bottom-0 px-2 bg-white/50 dark:bg-black/50 py-4 w-full">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-1 text-[13px]">
+              <Rocket />
+              <p className="opacity-70 font-bold">Free Plan</p>
+            </div>
+            <p className="text-[13px] opacity-70">{arr.length}/3</p>
+          </div>
+
+          <Progress
+            value={arr.length > 3 ? 100 : arr.length * 33}
+            className="mt2"
+          />
+        </div>
       </div>
 
       <div
