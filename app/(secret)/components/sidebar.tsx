@@ -1,23 +1,7 @@
 'use client'
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Progress } from '@/components/ui/progress'
-import { api } from '@/convex/_generated/api'
 import { cn } from '@/lib/utils'
-import { useMutation } from 'convex/react'
-import {
-  ChevronsLeft,
-  MenuIcon,
-  Plus,
-  Rocket,
-  Search,
-  Settings,
-  Trash,
-} from 'lucide-react'
+import { ChevronsLeft, MenuIcon } from 'lucide-react'
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import DocumentList from './document-list'
@@ -99,14 +83,6 @@ const Sidebar = () => {
     document.removeEventListener('mouseup', handleMouseUp)
   }
 
-  const onCreateDocument = () => {
-    createDocument({
-      title: 'Untitle',
-    })
-  }
-
-  const arr = [1]
-
   return (
     <>
       <div
@@ -137,19 +113,6 @@ const Sidebar = () => {
 
         <div className="mt-4">
           <DocumentList />
-          <Item onClick={onCreateDocument} icon={Plus} label="Add a page" />
-
-          <Popover>
-            <PopoverTrigger className="w-full mt-4">
-              <Item label="Trash" icon={Trash} />
-            </PopoverTrigger>
-            <PopoverContent
-              className="p-0 w-72"
-              side={isMobile ? 'bottom' : 'right'}
-            >
-              Place content for the popover{' '}
-            </PopoverContent>
-          </Popover>
         </div>
 
         <div
