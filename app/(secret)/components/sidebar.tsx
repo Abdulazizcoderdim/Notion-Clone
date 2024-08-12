@@ -18,7 +18,9 @@ import {
   Settings,
   Trash,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 import { useMediaQuery } from 'usehooks-ts'
 import DocumentList from './document-list'
 import { Item } from './item'
@@ -28,6 +30,7 @@ import { UserBox } from './user-box'
 const Sidebar = () => {
   const isMobile = useMediaQuery('(max-width: 770px)')
   const createDocument = useMutation(api.document.createDocument)
+  const router = useRouter()
 
   const sidebarRef = useRef<ElementRef<'div'>>(null)
   const navbarRef = useRef<ElementRef<'div'>>(null)
@@ -99,9 +102,16 @@ const Sidebar = () => {
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
   }
+
   const onCreateDocument = () => {
-    createDocument({
-      title: 'Untitle',
+    const promise = createDocument({
+      title: 'Untitled',
+    }).then((docId) => router.push(`documents/${docId}`))
+
+    toast.promise(promise, {
+      loading: 'Creating a new document...',
+      success: 'Created a new document',
+      error: 'Failed to create a new document',
     })
   }
 
