@@ -1,11 +1,28 @@
 'use client'
 
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Progress } from '@/components/ui/progress'
+import { api } from '@/convex/_generated/api'
 import { cn } from '@/lib/utils'
-import { ChevronsLeft, MenuIcon } from 'lucide-react'
+import { useMutation } from 'convex/react'
+import {
+  ChevronsLeft,
+  MenuIcon,
+  Plus,
+  Rocket,
+  Search,
+  Settings,
+  Trash,
+} from 'lucide-react'
 import React, { ElementRef, useEffect, useRef, useState } from 'react'
 import { useMediaQuery } from 'usehooks-ts'
 import DocumentList from './document-list'
 import { Item } from './item'
+import TrashBox from './trash-box'
 import { UserBox } from './user-box'
 
 const Sidebar = () => {
@@ -51,7 +68,7 @@ const Sidebar = () => {
     }
   }
 
-  const handleMoseDown = (
+  const handleMouseDown = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
     event.preventDefault()
@@ -82,23 +99,30 @@ const Sidebar = () => {
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
   }
+  const onCreateDocument = () => {
+    createDocument({
+      title: 'Untitle',
+    })
+  }
+
+  const arr = [1]
 
   return (
     <>
       <div
-        ref={sidebarRef}
         className={cn(
-          'group/sidebar h-screen bg-secondary overflow-y-auto relative flex w-60 flex-col z-50',
+          'group/sidebar h-screen bg-secondary overflow-y-auto flex w-60 flex-col z-50 sticky left-0 top-0',
           isResetting && 'transition-all ease-in duration-300',
           isMobile && 'w-0'
         )}
+        ref={sidebarRef}
       >
         <div
-          role="button"
           className={cn(
-            'h-6 w-6 flex items-center justify-center text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 cursor-pointer opacity-0 group-hover/sidebar:opacity-100 transition',
+            'h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition',
             isMobile && 'opacity-100'
           )}
+          role="button"
           onClick={collapse}
         >
           <ChevronsLeft className="h-6 w-6" />
@@ -113,11 +137,24 @@ const Sidebar = () => {
 
         <div className="mt-4">
           <DocumentList />
+          <Item onClick={onCreateDocument} icon={Plus} label="Add a page" />
+
+          <Popover>
+            <PopoverTrigger className="w-full mt-4">
+              <Item label="Trash" icon={Trash} />
+            </PopoverTrigger>
+            <PopoverContent
+              className="p-0 w-72"
+              side={isMobile ? 'bottom' : 'right'}
+            >
+              <TrashBox />
+            </PopoverContent>
+          </Popover>
         </div>
 
         <div
-          onMouseDown={handleMoseDown}
-          className="absolute right-0 top-0 w-1.5 h-full cursor-ew-resize bg-primary/10 opacity-0 group-hover/sidebar:opacity-100 transition"
+          className="absolute right-0 top-0 w-1 h-full cursor-ew-resize bg-primary/10 opacity-0 group-hover/sidebar:opacity-100 transition"
+          onMouseDown={handleMouseDown}
         />
 
         <div className="absolute bottom-0 px-2 bg-white/50 dark:bg-black/50 py-4 w-full">
